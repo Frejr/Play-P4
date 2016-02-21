@@ -37,8 +37,10 @@ foreach my $input ( @inputs ) {
   my $name = defined $input->{name} ? $input->{"name"} : "";
   $form{$name}=$input->{'value'};
 }
-$form{'IDToken1'} = ""; # nr telefonu
-$form{'IDToken2'} = ""; # hasło
+my $auth;
+if ( -r "$ENV{HOME}/.play" ) { $auth = do "$ENV{HOME}/.play"; print "\nOK\n" };
+$form{'IDToken1'} = $auth->{'login'} ? $auth->{'login'} : ""; # nr telefonu
+$form{'IDToken2'} = $auth->{'password'} ? $auth->{'password'} : ""; # hasło
 
 #print $form -> {'action'}, "\n";
 $res = $ua -> post( "https://logowanie.play.pl/".$form -> {'action'}, \%form );
